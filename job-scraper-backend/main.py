@@ -133,14 +133,18 @@ app = FastAPI(title="Job Scraper API")
 # Router with /api prefix
 api = APIRouter(prefix="/api")
 
-# CORS: localhost + production frontend (set CORS_ORIGINS in deployment)
-_origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
-_env_origins = os.environ.get("CORS_ORIGINS", "")
-if _env_origins:
-    _origins.extend(x.strip() for x in _env_origins.split(",") if x.strip())
+# -----------------------------
+# ----- CORS Configuration ----
+# -----------------------------
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://enchanting-raindrop-dd802f.netlify.app"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
