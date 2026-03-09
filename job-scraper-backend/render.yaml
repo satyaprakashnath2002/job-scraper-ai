@@ -1,0 +1,16 @@
+# Optional: use with Render. Set "Root Directory" to job-scraper-backend when creating the service.
+# Build: pip install -r requirements.txt
+# Start: uvicorn main:app --host 0.0.0.0 --port $PORT
+# Env: DATABASE_URL, CORS_ORIGINS (your frontend URL, e.g. https://your-app.vercel.app)
+
+services:
+  - type: web
+    name: job-scraper-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
