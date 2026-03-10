@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useMemo } from "react";
 import RequireAuth from "@/components/RequireAuth";
 import Navbar from "@/components/Navbar";
-import { fetchApi, uploadProfileImage, getProfileImageUrl, uploadResume, getResumeUrl, deleteResume } from "@/lib/api";
+import { fetchApi, uploadProfileImage, getProfileImageUrl, uploadResume, getResumeUrl, deleteResume, deleteProfileImage } from "@/lib/api";
 import type { ApplicationHistoryItem, UserProfile } from "@/types";
 import { useToast } from "@/components/Toast";
 
@@ -198,7 +198,7 @@ export default function ProfilePage() {
     setError("");
     try {
       setSaving("delete-image");
-      await fetchApi("/profile/image", { method: "DELETE" });
+      await deleteProfileImage();
       setUser((u) => (u ? { ...u, profile_image: null } : null));
       showToast("Profile photo removed", "info");
     } catch (err) {

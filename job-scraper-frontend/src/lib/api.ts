@@ -138,3 +138,18 @@ export async function deleteResume(): Promise<void> {
     throw new Error(err.detail ?? "Delete failed");
   }
 }
+
+/** Delete profile image */
+export async function deleteProfileImage(): Promise<void> {
+  const baseUrl = getApiUrl();
+  const url = `${baseUrl}${API_PREFIX}/profile/image`;
+  const token = getToken();
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error(err.detail ?? "Delete failed");
+  }
+}
