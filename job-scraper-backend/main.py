@@ -231,9 +231,9 @@ def update_profile(body: UpdateProfileBody, db: Session = Depends(database.get_d
     return {"message": "Profile updated"}
 
 # -----------------------------
-# ----- Upload Routes --------
+# ----- Upload Routes (under /api) --------
 # -----------------------------
-@app.post("/profile/image")
+@api.post("/profile/image")
 def upload_profile_image(
     file: UploadFile = File(...),
     db: Session = Depends(database.get_db),
@@ -250,7 +250,7 @@ def upload_profile_image(
     db.commit()
     return {"profile_image": rel, "message": "Image uploaded"}
 
-@app.post("/profile/resume")
+@api.post("/profile/resume")
 def upload_resume(file: UploadFile = File(...), db: Session = Depends(database.get_db),
                   current_user: models.User = Depends(get_current_user)):
     ext = Path(file.filename or "").suffix.lower()
@@ -265,7 +265,7 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(database.g
     return {"resume": rel, "message": "Resume uploaded"}
 
 
-@app.delete("/profile/image")
+@api.delete("/profile/image")
 def delete_profile_image(db: Session = Depends(database.get_db),
                          current_user: models.User = Depends(get_current_user)):
     """Delete profile image"""
@@ -282,7 +282,7 @@ def delete_profile_image(db: Session = Depends(database.get_db),
     return {"message": "Profile image removed"}
 
 
-@app.delete("/profile/resume")
+@api.delete("/profile/resume")
 def delete_profile_resume(db: Session = Depends(database.get_db),
                           current_user: models.User = Depends(get_current_user)):
     """Delete profile resume"""
