@@ -264,6 +264,41 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(database.g
     db.commit()
     return {"resume": rel, "message": "Resume uploaded"}
 
+
+@app.delete("/profile/image")
+def delete_profile_image(db: Session = Depends(database.get_db),
+                         current_user: models.User = Depends(get_current_user)):
+    """Delete profile image"""
+    if current_user.profile_image:
+        # Try to delete the file
+        try:
+            img_path = UPLOAD_DIR / current_user.profile_image.replace("uploads/", "")
+            if img_path.exists():
+                img_path.unlink()
+        except Exception:
+            pass  # Ignore file deletion errors
+        current_user.profile_image = None
+        db.commit()
+    return {"message": "Profile image removed"}
+
+
+@app.delete("/profile/resume")
+def delete_profile_resume(db: Session = Depends(database.get_db),
+                          current_user: models.User = Depends(get_current_user)):
+    """Delete profile resume"""
+    if current_user.resume:
+        # Try to delete the file
+        try:
+            resume_path = UPLOAD_DIR / current_user.resume.replace("uploads/", "")
+            if resume_path.exists():
+                resume_path.unlink()
+        except Exception:
+            pass  # Ignore file deletion errors
+        current_user.resume = None
+        db.commit()
+    return {"message": "Resume removed"}
+
+
 # -----------------------------
 # ----- AI Endpoints ---------
 # -----------------------------
